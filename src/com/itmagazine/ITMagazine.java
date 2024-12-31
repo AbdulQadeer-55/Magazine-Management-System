@@ -1,55 +1,175 @@
 package com.itmagazine;
 
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class ITMagazine {
+    private static final String DATA_FILE = "magazine_data.txt";
+
     public static void main(String[] args) {
-        // Create departments
         MarketingDepartment marketing = new MarketingDepartment();
         AccountsDepartment accounts = new AccountsDepartment();
         ProcessingCentre processing = new ProcessingCentre();
         Editor editor = new Editor("John Doe");
 
-        // Create advertisers
-        Advertiser advertiser1 = new Advertiser("TechCorp");
-        Advertiser advertiser2 = new Advertiser("GadgetWorld");
+        loadSavedData(marketing, processing);
 
-        // Create advertisements
-        Advertisement ad1 = new Advertisement("TechCorp Ad Content", "Full Page", "Front Page", advertiser1);
-        Advertisement ad2 = new Advertisement("GadgetWorld Ad Content", "Half Page", "Back Page", advertiser2);
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        // Receive and store advertisements
-        marketing.receiveAdvertisement(ad1);
-        marketing.receiveAdvertisement(ad2);
+        while (running) {
+            System.out.println("\n--- IT in the Valley Magazine Management ---");
+            System.out.println("1. Add Advertiser");
+            System.out.println("2. Add Advertisement");
+            System.out.println("3. Add Journalist");
+            System.out.println("4. Add Story");
+            System.out.println("5. Add Photographer");
+            System.out.println("6. Add Photograph");
+            System.out.println("7. Generate Magazine Issue");
+            System.out.println("8. Save and Exit");
+            System.out.print("Choose an option: ");
 
-        // Store advertisements in processing centre
-        processing.storeAdvertisement(ad1);
-        processing.storeAdvertisement(ad2);
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
 
-        // Create journalists and stories
-        Journalist journalist1 = new Journalist("Alice Johnson");
-        Story story1 = new Story("Tech Innovations", "Content of Tech Innovations", journalist1);
-        journalist1.submitStory(story1);
-        processing.storeStory(story1);
+            switch (choice) {
+                case 1:
+                    addAdvertiser(marketing, scanner);
+                    break;
+                case 2:
+                    addAdvertisement(marketing, scanner);
+                    break;
+                case 3:
+                    addJournalist(processing, scanner);
+                    break;
+                case 4:
+                    addStory(processing, scanner);
+                    break;
+                case 5:
+                    addPhotographer(processing, scanner);
+                    break;
+                case 6:
+                    addPhotograph(processing, scanner);
+                    break;
+                case 7:
+                    generateMagazineIssue(editor, processing, accounts);
+                    break;
+                case 8:
+                    saveData(marketing, processing);
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
 
-        // Create photographers and photographs
-        Photographer photographer1 = new Photographer("Bob Smith");
-        Photograph photo1 = new Photograph("Tech Conference Photo", photographer1);
-        photographer1.submitPhotograph(photo1);
-        processing.storePhotograph(photo1);
+        scanner.close();
+    }
 
-        // Create a magazine issue
-        MagazineIssue issue = new MagazineIssue("December 2024");
+    private static void addAdvertiser(MarketingDepartment marketing, Scanner scanner) {
+        System.out.print("Enter advertiser name: ");
+        String name = scanner.nextLine();
+        Advertiser advertiser = new Advertiser(name);
+        marketing.addAdvertiser(advertiser);
+        System.out.println("Advertiser added.");
+    }
+
+    private static void addAdvertisement(MarketingDepartment marketing, Scanner scanner) {
+        System.out.print("Enter advertiser name: ");
+        String advertiserName = scanner.nextLine();
+        Advertiser advertiser = marketing.getAdvertiserByName(advertiserName);
+
+        if (advertiser != null) {
+            System.out.print("Enter advertisement content: ");
+            String content = scanner.nextLine();
+            System.out.print("Enter advertisement size: ");
+            String size = scanner.nextLine();
+            System.out.print("Enter advertisement position: ");
+            String position = scanner.nextLine();
+
+            Advertisement advertisement = new Advertisement(content, size, position, advertiser);
+            advertiser.addAdvertisement(advertisement);
+            System.out.println("Advertisement added.");
+        } else {
+            System.out.println("Advertiser not found.");
+        }
+    }
+
+    private static void addJournalist(ProcessingCentre processing, Scanner scanner) {
+        System.out.print("Enter journalist name: ");
+        String name = scanner.nextLine();
+        Journalist journalist = new Journalist(name);
+        processing.addJournalist(journalist);
+        System.out.println("Journalist added.");
+    }
+
+    private static void addStory(ProcessingCentre processing, Scanner scanner) {
+        System.out.print("Enter journalist name: ");
+        String journalistName = scanner.nextLine();
+        Journalist journalist = processing.getJournalistByName(journalistName);
+
+        if (journalist != null) {
+            System.out.print("Enter story title: ");
+            String title = scanner.nextLine();
+            System.out.print("Enter story content: ");
+            String content = scanner.nextLine();
+
+            Story story = new Story(title, content, journalist);
+            journalist.submitStory(story);
+            processing.storeStory(story);
+            System.out.println("Story added.");
+        } else {
+            System.out.println("Journalist not found.");
+        }
+    }
+
+    private static void addPhotographer(ProcessingCentre processing, Scanner scanner) {
+        System.out.print("Enter photographer name: ");
+        String name = scanner.nextLine();
+        Photographer photographer = new Photographer(name);
+        processing.addPhotographer(photographer);
+        System.out.println("Photographer added.");
+    }
+
+    private static void addPhotograph(ProcessingCentre processing, Scanner scanner) {
+        System.out.print("Enter photographer name: ");
+        String photographerName = scanner.nextLine();
+        Photographer photographer = processing.getPhotographerByName(photographerName);
+
+        if (photographer != null) {
+            System.out.print("Enter photograph description: ");
+            String description = scanner.nextLine();
+
+            Photograph photograph = new Photograph(description, photographer);
+            photographer.submitPhotograph(photograph);
+            processing.storePhotograph(photograph);
+            System.out.println("Photograph added.");
+        } else {
+            System.out.println("Photographer not found.");
+        }
+    }
+
+    private static void generateMagazineIssue(Editor editor, ProcessingCentre processing, AccountsDepartment accounts) {
+        System.out.print("Enter issue date (e.g., December 2024): ");
+        Scanner scanner = new Scanner(System.in);
+        String issueDate = scanner.nextLine();
+
+        MagazineIssue issue = new MagazineIssue(issueDate);
         editor.assembleMagazineIssue(issue, processing.getStories(), processing.getAdvertisements(), processing.getPhotographs());
 
-        // Send payments and invoices
-        accounts.sendPayment(journalist1.getName(), 500.0);
-        accounts.sendPayment(photographer1.getName(), 300.0);
-        accounts.invoiceAdvertiser(advertiser1, 1500.0);
-        accounts.invoiceAdvertiser(advertiser2, 1000.0);
+        for (Story story : issue.getStories()) {
+            accounts.sendPayment(story.getJournalist().getName(), 500.0); // Example payment amount
+        }
 
-        // Output magazine issue details
-        System.out.println("Magazine Issue Date: " + issue.getIssueDate());
+        for (Photograph photograph : issue.getPhotographs()) {
+            accounts.sendPayment(photograph.getPhotographer().getName(), 300.0); // Example payment amount
+        }
+
+        for (Advertisement advertisement : issue.getAdvertisements()) {
+            accounts.invoiceAdvertiser(advertisement.getAdvertiser(), 1000.0); // Example invoice amount
+        }
+
+        System.out.println("\nMagazine Issue Date: " + issue.getIssueDate());
         System.out.println("Stories in the Issue:");
         for (Story story : issue.getStories()) {
             System.out.println("- " + story.getTitle() + " by " + story.getJournalist().getName());
@@ -61,6 +181,25 @@ public class ITMagazine {
         System.out.println("Photographs in the Issue:");
         for (Photograph photograph : issue.getPhotographs()) {
             System.out.println("- " + photograph.getDescription() + " by " + photograph.getPhotographer().getName());
+        }
+    }
+
+    private static void loadSavedData(MarketingDepartment marketing, ProcessingCentre processing) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Load data from file (implement your data format and parsing logic)
+            }
+        } catch (IOException e) {
+            System.out.println("No saved data found.");
+        }
+    }
+
+    private static void saveData(MarketingDepartment marketing, ProcessingCentre processing) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
+            // Save data to file (implement your data format and writing logic)
+        } catch (IOException e) {
+            System.out.println("Error saving data.");
         }
     }
 }

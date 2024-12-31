@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MarketingDepartment {
-    private List<Advertisement> advertisements;
+    private List<Advertiser> advertisers = new ArrayList<>();
 
-    public MarketingDepartment() {
-        this.advertisements = new ArrayList<>();
+    public void addAdvertiser(Advertiser advertiser) {
+        advertisers.add(advertiser);
     }
 
-    public void receiveAdvertisement(Advertisement advertisement) {
-        advertisements.add(advertisement);
-    }
-
-    public List<Advertisement> getAdvertisements() {
-        return advertisements;
+    public Advertiser getAdvertiserByName(String name) {
+        for (Advertiser advertiser : advertisers) {
+            if (advertiser.getName().equalsIgnoreCase(name)) {
+                return advertiser;
+            }
+        }
+        return null;
     }
 }
