@@ -18,4 +18,12 @@ public class MarketingDepartment {
         }
         return null;
     }
+
+    public List<Advertiser> getAdvertisers() {
+        return advertisers;
+    }
+
+    public void setAdvertisers(List<Advertiser> advertisers) {
+        this.advertisers = advertisers;
+    }
 }

@@ -59,4 +59,32 @@ public class ProcessingCentre {
     public List<Photograph> getPhotographs() {
         return photographs;
     }
+
+    public List<Journalist> getJournalists() {
+        return journalists;
+    }
+
+    public List<Photographer> getPhotographers() {
+        return photographers;
+    }
+
+    public void setAdvertisements(List<Advertisement> advertisements) {
+        this.advertisements = advertisements;
+    }
+
+    public void setStories(List<Story> stories) {
+        this.stories = stories;
+    }
+
+    public void setPhotographs(List<Photograph> photographs) {
+        this.photographs = photographs;
+    }
+
+    public void setJournalists(List<Journalist> journalists) {
+        this.journalists = journalists;
+    }
+
+    public void setPhotographers(List<Photographer> photographers) {
+        this.photographers = photographers;
+    }
 }
