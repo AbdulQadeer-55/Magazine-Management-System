@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessingCentre {
-    private List<Advertisement> advertisements;
-    private List<Story> stories;
-    private List<Photograph> photographs;
-
-    public ProcessingCentre() {
-        this.advertisements = new ArrayList<>();
-        this.stories = new ArrayList<>();
-        this.photographs = new ArrayList<>();
-    }
+    private List<Advertisement> advertisements = new ArrayList<>();
+    private List<Story> stories = new ArrayList<>();
+    private List<Photograph> photographs = new ArrayList<>();
+    private List<Journalist> journalists = new ArrayList<>();
+    private List<Photographer> photographers = new ArrayList<>();
 
     public void storeAdvertisement(Advertisement advertisement) {
         advertisements.add(advertisement);
@@ -24,6 +20,32 @@ public class ProcessingCentre {
 
     public void storePhotograph(Photograph photograph) {
         photographs.add(photograph);
+    }
+
+    public void addJournalist(Journalist journalist) {
+        journalists.add(journalist);
+    }
+
+    public Journalist getJournalistByName(String name) {
+        for (Journalist journalist : journalists) {
+            if (journalist.getName().equalsIgnoreCase(name)) {
+                return journalist;
+            }
+        }
+        return null;
+    }
+
+    public void addPhotographer(Photographer photographer) {
+        photographers.add(photographer);
+    }
+
+    public Photographer getPhotographerByName(String name) {
+        for (Photographer photographer : photographers) {
+            if (photographer.getName().equalsIgnoreCase(name)) {
+                return photographer;
+            }
+        }
+        return null;
     }
 
     public List<Advertisement> getAdvertisements() {
