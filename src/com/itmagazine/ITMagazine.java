@@ -1,10 +1,14 @@
 package com.itmagazine;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class ITMagazine {
-    private static final String DATA_FILE = "magazine_data.txt";
+    private static final String DATA_FILE = "magazine_data.json";
 
     public static void main(String[] args) {
         MarketingDepartment marketing = new MarketingDepartment();
@@ -185,10 +189,25 @@ public class ITMagazine {
     }
 
     private static void loadSavedData(MarketingDepartment marketing, ProcessingCentre processing) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Load data from file (implement your data format and parsing logic)
+        try (Reader reader = new FileReader(DATA_FILE)) {
+            Gson gson = new Gson();
+            Type dataType = new TypeToken<Map<String, Object>>() {}.getType();
+            Map<String, Object> data = gson.fromJson(reader, dataType);
+
+            if (data != null) {
+                List<Advertiser> advertisers = gson.fromJson(gson.toJson(data.get("advertisers")), new TypeToken<List<Advertiser>>() {}.getType());
+                List<Journalist> journalists = gson.fromJson(gson.toJson(data.get("journalists")), new TypeToken<List<Journalist>>() {}.getType());
+                List<Photographer> photographers = gson.fromJson(gson.toJson(data.get("photographers")), new TypeToken<List<Photographer>>() {}.getType());
+                List<Story> stories = gson.fromJson(gson.toJson(data.get("stories")), new TypeToken<List<Story>>() {}.getType());
+                List<Advertisement> advertisements = gson.fromJson(gson.toJson(data.get("advertisements")), new TypeToken<List<Advertisement>>() {}.getType());
+                List<Photograph> photographs = gson.fromJson(gson.toJson(data.get("photographs")), new TypeToken<List<Photograph>>() {}.getType());
+
+                marketing.setAdvertisers(advertisers);
+                processing.setJournalists(journalists);
+                processing.setPhotographers(photographers);
+                processing.setStories(stories);
+                processing.setAdvertisements(advertisements);
+                processing.setPhotographs(photographs);
             }
         } catch (IOException e) {
             System.out.println("No saved data found.");
@@ -196,8 +215,17 @@ public class ITMagazine {
     }
 
     private static void saveData(MarketingDepartment marketing, ProcessingCentre processing) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
-            // Save data to file (implement your data format and writing logic)
+        Map<String, Object> data = new HashMap<>();
+        data.put("advertisers", marketing.getAdvertisers());
+        data.put("journalists", processing.getJournalists());
+        data.put("photographers", processing.getPhotographers());
+        data.put("stories", processing.getStories());
+        data.put("advertisements", processing.getAdvertisements());
+        data.put("photographs", processing.getPhotographs());
+
+        try (Writer writer = new FileWriter(DATA_FILE)) {
+            Gson gson = new Gson();
+            gson.toJson(data, writer);
         } catch (IOException e) {
             System.out.println("Error saving data.");
         }
