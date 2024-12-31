@@ -1,6 +1,15 @@
 package com.itmagazine;
 
 import org.junit.jupiter.api.Test;
+
+// import com.itmagazine.AccountsDepartment;
+// import com.itmagazine.Advertisement;
+// import com.itmagazine.Advertiser;
+// import com.itmagazine.Journalist;
+// import com.itmagazine.Photograph;
+// import com.itmagazine.Photographer;
+// import com.itmagazine.Story;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ITMagazineTest {
