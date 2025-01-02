@@ -1,1 +1,0 @@
-def myAtoi(s):\n    s = s.strip()\n    if not s:\n        return 0\n    sign = 1\n    if s[0] == '-':\n        sign = -1\n        s = s[1:]\n    elif s[0] == '+':\n        s = s[1:]\n    result = 0\n    for char in s:\n        if char.isdigit():\n            result = result * 10 + int(char)\n        else:\n            break\n    return sign * result

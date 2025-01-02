@@ -1,1 +1,0 @@
-# Solution for Majority Element

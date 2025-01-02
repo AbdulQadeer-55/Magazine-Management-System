@@ -1,1 +1,0 @@
-def lengthOfLongestSubstring(s):\n    chars = {}\n    left = 0\n    max_len = 0\n    for right in range(len(s)):\n        if s[right] in chars and chars[s[right]] >= left:\n            left = chars[s[right]] + 1\n        chars[s[right]] = right\n        max_len = max(max_len, right - left + 1)\n    return max_len
