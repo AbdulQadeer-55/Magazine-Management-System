@@ -8,6 +8,7 @@ import processing.ArchiveManager;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         // Initialize necessary objects
         ConsoleUI consoleUI = new ConsoleUI();
@@ -15,7 +16,7 @@ public class Main {
 
         // Initialize departments and managers
         AccountsDepartment accountsDepartment = new AccountsDepartment();
-        final MarketingDepartment marketingDepartment = new MarketingDepartment("defaultArgument"); // Replace with appropriate arguments
+        MarketingDepartment marketingDepartment = new MarketingDepartment(accountsDepartment.getAdvertisements());
         ArchiveManager archiveManager = new ArchiveManager();
         Editor editor = new Editor();
 

@@ -1,8 +1,11 @@
 package accounts;
 
 import main.ConsoleUI;
+import marketing.Advertisement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AccountsDepartment {
@@ -12,6 +15,14 @@ public class AccountsDepartment {
     public AccountsDepartment() {
         this.paymentsDue = new HashMap<>();
         this.advertiserInvoices = new HashMap<>();
+    }
+
+    public List<Advertisement> getAdvertisements() {
+
+        // return the list of advertisements
+
+        return new ArrayList<>();
+
     }
 
     public void viewInvoices(ConsoleUI consoleUI) {
