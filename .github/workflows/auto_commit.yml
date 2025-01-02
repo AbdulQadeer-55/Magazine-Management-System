@@ -2,7 +2,8 @@ name: Auto Commit README
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Runs daily at midnight
+    - cron: "0 0 * * *"  # Runs daily at midnight
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   update-readme:
@@ -18,12 +19,12 @@ jobs:
 
     - name: Commit changes
       run: |
-        git config --global user.name "your-username"
-        git config --global user.email "your-email@example.com"
+        git config --global user.name "AbdulQadeer-55"
+        git config --global user.email "qadeermemon100@gmail.com"
         git add README.md
         git commit -m "Update README: $(date +'%Y-%m-%d %H:%M:%S')"
     
     - name: Push changes
-      run: git push
+      run: git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
