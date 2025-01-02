@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Editor {
 
     public void manageContent(Scanner scanner, ConsoleUI consoleUI) {
-        consoleUI.printHeader("EDITOR MANAGEMENT");
+        consoleUI.printHeader("Editor Management");
         consoleUI.printMenu(new String[]{
                 "1. Manage Stories",
                 "2. Manage Photographs",
