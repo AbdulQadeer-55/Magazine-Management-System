@@ -1,8 +1,8 @@
-name: Daily LeetCode Solutions
+name: Auto Commit LeetCode Solutions
 
 on:
   schedule:
-    - cron: "0 */4 * * *"  # Runs every 4 hours
+    - cron: "0 0 * * *"  # Runs every day at midnight
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -13,114 +13,63 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-
     - name: Create LeetCode Python files and solve problems
       run: |
-        # Create a Python script to generate solutions
-        cat > generate_solution.py << 'EOL'
-        import random
-        from datetime import datetime
-        import os
-
-        # Template for Python solution files
-        SOLUTION_TEMPLATE = '''"""
-        LeetCode Problem: {problem_name}
-        Difficulty: {difficulty}
-        Date: {date}
+        # List of LeetCode problems to solve
+        problems=("Two Sum" "Reverse Linked List" "Longest Substring Without Repeating Characters" "Add Two Numbers" "Merge Intervals" "Valid Parentheses" "Roman to Integer" "Palindrome Number" "String to Integer (atoi)" "Container With Most Water" "3Sum" "Best Time to Buy and Sell Stock" "Climbing Stairs" "Remove Duplicates from Sorted Array" "Search Insert Position" "Maximum Subarray" "Move Zeroes" "Valid Anagram" "Longest Palindromic Substring" "Letter Combinations of a Phone Number" "Generate Parentheses" "Spiral Matrix" "Find Minimum in Rotated Sorted Array" "Majority Element" "Intersection of Two Arrays II" "Subsets" "Permutations" "Combination Sum" "Rotate Image" "Sudoku Solver" "Word Search" "Course Schedule")
         
-        Problem Description:
-        {description}
-
-        Example:
-        {example}
-        """
-
-
-        class Solution:
-            def {function_name}(self{params}):
-                """
-                {docstring}
-                
-                Time Complexity: {time_complexity}
-                Space Complexity: {space_complexity}
-                """
-                {solution_code}
-
-
-        # Test cases
-        def test_{function_name}():
-            solution = Solution()
-            # Add test cases here
-            {test_cases}
-
-        if __name__ == "__main__":
-            test_{function_name}()
-        '''
-
-        # List of sample LeetCode problems
-        PROBLEMS = [
-            {
-                "name": "Two Sum",
-                "difficulty": "Easy",
-                "function": "twoSum",
-                "params": ", nums: list[int], target: int",
-                "description": "Given an array of integers nums and an integer target, return indices of the two numbers that add up to target.",
-                "example": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
-                "solution": "hash_map = {}\n        for i, num in enumerate(nums):\n            complement = target - num\n            if complement in hash_map:\n                return [hash_map[complement], i]\n            hash_map[num] = i\n        return []",
-                "test": "assert solution.twoSum([2,7,11,15], 9) == [0,1]"
-            },
-            # Add more problem templates here
-        ]
-
-        def generate_solution():
-            problem = random.choice(PROBLEMS)
-            current_date = datetime.now().strftime("%Y-%m-%d")
-            
-            # Generate filename
-            filename = f"leetcode_{problem['name'].lower().replace(' ', '_')}_{current_date}.py"
-            
-            # Fill template
-            solution_content = SOLUTION_TEMPLATE.format(
-                problem_name=problem['name'],
-                difficulty=problem['difficulty'],
-                date=current_date,
-                description=problem['description'],
-                example=problem['example'],
-                function_name=problem['function'],
-                params=problem['params'],
-                docstring=problem['description'],
-                time_complexity="O(n)",
-                space_complexity="O(n)",
-                solution_code=problem['solution'],
-                test_cases=problem['test']
-            )
-            
-            return filename, solution_content
-
-        # Generate and save solution
-        filename, content = generate_solution()
-        with open(filename, 'w') as f:
-            f.write(content)
+        # Get the current date to create a new file each day
+        DATE=$(date +'%Y-%m-%d')
+        FILENAME="leetcode_solutions_${DATE}.py"
         
-        print(f"Generated: {filename}")
-        EOL
+        # Create a new file for the current day
+        touch $FILENAME
 
-        # Execute the script multiple times for different solutions
-        for i in range(15):  # Generate 15 solutions
-          python3 generate_solution.py
+        # Loop over the first 10 problems and add them to the current file
+        for i in $(seq 0 9); do
+          PROBLEM_NAME="${problems[$i]}"
           
-          # Stage the new file
-          git add *.py
+          # Example: Write a basic solution for each problem
+          case $i in
+            0)  # Two Sum
+                echo "def twoSum(nums, target):\n    for i in range(len(nums)):\n        for j in range(i+1, len(nums)):\n            if nums[i] + nums[j] == target:\n                return [i, j]" >> $FILENAME
+                ;;
+            1)  # Reverse Linked List
+                echo "def reverseList(head):\n    prev = None\n    while head:\n        next_node = head.next\n        head.next = prev\n        prev = head\n        head = next_node\n    return prev" >> $FILENAME
+                ;;
+            2)  # Longest Substring Without Repeating Characters
+                echo "def lengthOfLongestSubstring(s):\n    chars = {}\n    left = 0\n    max_len = 0\n    for right in range(len(s)):\n        if s[right] in chars and chars[s[right]] >= left:\n            left = chars[s[right]] + 1\n        chars[s[right]] = right\n        max_len = max(max_len, right - left + 1)\n    return max_len" >> $FILENAME
+                ;;
+            3)  # Add Two Numbers
+                echo "def addTwoNumbers(l1, l2):\n    carry = 0\n    result = ListNode(0)\n    current = result\n    while l1 or l2 or carry:\n        val = carry\n        if l1:\n            val += l1.val\n            l1 = l1.next\n        if l2:\n            val += l2.val\n            l2 = l2.next\n        carry, val = divmod(val, 10)\n        current.next = ListNode(val)\n        current = current.next\n    return result.next" >> $FILENAME
+                ;;
+            4)  # Merge Intervals
+                echo "def merge(intervals):\n    intervals.sort(key=lambda x: x[0])\n    merged = []\n    for interval in intervals:\n        if not merged or merged[-1][1] < interval[0]:\n            merged.append(interval)\n        else:\n            merged[-1][1] = max(merged[-1][1], interval[1])\n    return merged" >> $FILENAME
+                ;;
+            5)  # Valid Parentheses
+                echo "def isValid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping:\n            top_element = stack.pop() if stack else '#'\n            if mapping[char] != top_element:\n                return False\n        else:\n            stack.append(char)\n    return not stack" >> $FILENAME
+                ;;
+            6)  # Roman to Integer
+                echo "def romanToInt(s):\n    roman_map = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}\n    total = 0\n    prev_value = 0\n    for char in reversed(s):\n        current_value = roman_map[char]\n        if current_value < prev_value:\n            total -= current_value\n        else:\n            total += current_value\n        prev_value = current_value\n    return total" >> $FILENAME
+                ;;
+            7)  # Palindrome Number
+                echo "def isPalindrome(x):\n    if x < 0:\n        return False\n    return x == int(str(x)[::-1])" >> $FILENAME
+                ;;
+            8)  # String to Integer (atoi)
+                echo "def myAtoi(s):\n    s = s.strip()\n    if not s:\n        return 0\n    sign = 1\n    if s[0] == '-':\n        sign = -1\n        s = s[1:]\n    elif s[0] == '+':\n        s = s[1:]\n    result = 0\n    for char in s:\n        if char.isdigit():\n            result = result * 10 + int(char)\n        else:\n            break\n    return sign * result" >> $FILENAME
+                ;;
+            9)  # Container With Most Water
+                echo "def maxArea(height):\n    left, right = 0, len(height) - 1\n    max_area = 0\n    while left < right:\n        width = right - left\n        max_area = max(max_area, min(height[left], height[right]) * width)\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return max_area" >> $FILENAME
+                ;;
+          esac
+
+          # Commit each solution
+          git add $FILENAME
           git config --global user.name "AbdulQadeer-55"
           git config --global user.email "qadeermemon100@gmail.com"
-          git commit -m "Add LeetCode solution for $(date '+%Y-%m-%d') - Commit $((i+1))/15"
+          git commit -m "Solve LeetCode problem: $PROBLEM_NAME - Commit $((i+1))"
           
-          # Small delay to space out commits
-          sleep 10
+        done
 
     - name: Push changes
       run: git push origin main
