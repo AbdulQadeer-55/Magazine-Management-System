@@ -1,4 +1,8 @@
-def twoSum(nums, target):\n    for i in range(len(nums)):\n        for j in range(i+1, len(nums)):\n            if nums[i] + nums[j] == target:\n                return [i, j]
+def twoSum(nums, target):
+	for i in range(len(nums)):
+		for j in range(i+1, len(nums)):
+			if nums[i] + nums[j] == target:
+				return [i, j]
 def reverseList(head):\n    prev = None\n    while head:\n        next_node = head.next\n        head.next = prev\n        prev = head\n        head = next_node\n    return prev
 def lengthOfLongestSubstring(s):\n    chars = {}\n    left = 0\n    max_len = 0\n    for right in range(len(s)):\n        if s[right] in chars and chars[s[right]] >= left:\n            left = chars[s[right]] + 1\n        chars[s[right]] = right\n        max_len = max(max_len, right - left + 1)\n    return max_len
 def addTwoNumbers(l1, l2):\n    carry = 0\n    result = ListNode(0)\n    current = result\n    while l1 or l2 or carry:\n        val = carry\n        if l1:\n            val += l1.val\n            l1 = l1.next\n        if l2:\n            val += l2.val\n            l2 = l2.next\n        carry, val = divmod(val, 10)\n        current.next = ListNode(val)\n        current = current.next\n    return result.next
@@ -8,3 +12,4 @@ def romanToInt(s):\n    roman_map = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100,
 def isPalindrome(x):\n    if x < 0:\n        return False\n    return x == int(str(x)[::-1])
 def myAtoi(s):\n    s = s.strip()\n    if not s:\n        return 0\n    sign = 1\n    if s[0] == '-':\n        sign = -1\n        s = s[1:]\n    elif s[0] == '+':\n        s = s[1:]\n    result = 0\n    for char in s:\n        if char.isdigit():\n            result = result * 10 + int(char)\n        else:\n            break\n    return sign * result
 def maxArea(height):\n    left, right = 0, len(height) - 1\n    max_area = 0\n    while left < right:\n        width = right - left\n        max_area = max(max_area, min(height[left], height[right]) * width)\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return max_area
+# Initialize two pointers at the start and end of the array
