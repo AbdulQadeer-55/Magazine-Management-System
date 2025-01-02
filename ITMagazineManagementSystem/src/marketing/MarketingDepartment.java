@@ -3,22 +3,17 @@ package marketing;
 import main.ConsoleUI;
 
 import java.util.List;
-import marketing.Advertisement;
 import java.util.Scanner;
 
 public class MarketingDepartment {
-    private List<Advertisement> advertisements;
-
-
+    private final List<Advertisement> advertisements;
 
     public MarketingDepartment(List<Advertisement> advertisements) {
-
         this.advertisements = advertisements;
-
     }
 
     public void manageAdvertisements(Scanner scanner, ConsoleUI consoleUI) {
-        consoleUI.printHeader("MARKETING DEPARTMENT");
+        consoleUI.printHeader("Marketing Department");
         consoleUI.printMenu(new String[]{
                 "1. Add Advertisement",
                 "2. View Advertisements",
@@ -47,14 +42,13 @@ public class MarketingDepartment {
     }
 
     private void viewAdvertisements(ConsoleUI consoleUI) {
-        consoleUI.printHeader("VIEW ADVERTISEMENTS");
+        consoleUI.printHeader("View Advertisements");
         if (advertisements.isEmpty()) {
             consoleUI.printMessage("No advertisements available.", "yellow");
-            return;
+        } else {
+            advertisements.forEach(advertisement -> {
+                consoleUI.printMessage("Advertiser: " + advertisement.getAdvertiser() + ", Amount: $" + advertisement.getAmount(), "green");
+            });
         }
-
-        advertisements.forEach(advertisement -> {
-            consoleUI.printMessage("Advertiser: " + advertisement.getAdvertiser() + ", Amount: $" + advertisement.getAmount(), "green");
-        });
     }
 }

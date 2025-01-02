@@ -18,7 +18,7 @@ public class ArchiveManager {
     }
 
     public void manageArchive(Scanner scanner, ConsoleUI consoleUI) {
-        consoleUI.printHeader("ARCHIVE MANAGEMENT");
+        consoleUI.printHeader("Archive Management");
         consoleUI.printMenu(new String[]{
                 "1. Archive Stories",
                 "2. Archive Photographs",
@@ -56,16 +56,15 @@ public class ArchiveManager {
     }
 
     private void viewArchivedContent(ConsoleUI consoleUI) {
-        consoleUI.printHeader("VIEW ARCHIVED CONTENT");
+        consoleUI.printHeader("View Archived Content");
         if (archivedStories.isEmpty() && archivedPhotographs.isEmpty()) {
             consoleUI.printMessage("No archived content available.", "yellow");
-            return;
+        } else {
+            consoleUI.printMessage("Archived Stories:", "yellow");
+            archivedStories.forEach(story -> consoleUI.printMessage(story.toString(), "green"));
+
+            consoleUI.printMessage("Archived Photographs:", "yellow");
+            archivedPhotographs.forEach(photograph -> consoleUI.printMessage(photograph.toString(), "green"));
         }
-
-        consoleUI.printMessage("Archived Stories:", "yellow");
-        archivedStories.forEach(story -> consoleUI.printMessage(story.toString(), "green"));
-
-        consoleUI.printMessage("Archived Photographs:", "yellow");
-        archivedPhotographs.forEach(photograph -> consoleUI.printMessage(photograph.toString(), "green"));
     }
 }
