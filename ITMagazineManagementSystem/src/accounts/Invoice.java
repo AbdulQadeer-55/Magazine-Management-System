@@ -1,19 +1,18 @@
 package accounts;
 
 public class Invoice {
-    private final String advertiser;
+    private final String contributorName;
     private final double amount;
+    private final String description;
 
-    public Invoice(String advertiser, double amount) {
-        this.advertiser = advertiser;
+    public Invoice(String contributorName, double amount, String description) {
+        this.contributorName = contributorName;
         this.amount = amount;
+        this.description = description;
     }
 
-    public String getAdvertiser() {
-        return advertiser;
-    }
-
-    public double getAmount() {
-        return amount;
+    @Override
+    public String toString() {
+        return "Invoice [Contributor: " + contributorName + ", Amount: $" + amount + ", Description: " + description + "]";
     }
 }

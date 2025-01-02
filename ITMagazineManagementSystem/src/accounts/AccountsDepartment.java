@@ -1,59 +1,64 @@
 package accounts;
 
 import main.ConsoleUI;
-import marketing.Advertisement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Scanner;
 
 public class AccountsDepartment {
-    private final Map<String, Double> paymentsDue;
-    private final Map<String, Double> advertiserInvoices;
+    private final List<Invoice> invoices;
 
     public AccountsDepartment() {
-        this.paymentsDue = new HashMap<>();
-        this.advertiserInvoices = new HashMap<>();
+        this.invoices = new ArrayList<>();
     }
 
-    public List<Advertisement> getAdvertisements() {
+    // Method to manage payments and invoices
+    public void managePayments(Scanner scanner, ConsoleUI consoleUI) {
+        consoleUI.printHeader("MANAGE PAYMENTS");
+        consoleUI.printMenu(new String[]{
+                "1. Create Invoice",
+                "2. View Invoices",
+                "3. Go Back"
+        });
 
-        // return the list of advertisements
+        int choice = consoleUI.getChoice(scanner);
 
-        return new ArrayList<>();
-
+        switch (choice) {
+            case 1 -> createInvoice(scanner, consoleUI);
+            case 2 -> viewInvoices(consoleUI);
+            case 3 -> consoleUI.printMessage("Returning to the main menu.", "yellow");
+            default -> consoleUI.printMessage("Invalid option.", "red");
+        }
     }
 
-    public void viewInvoices(ConsoleUI consoleUI) {
-        consoleUI.printHeader("Invoices Management");
-        if (advertiserInvoices.isEmpty()) {
+    // Method to create an invoice
+    private void createInvoice(Scanner scanner, ConsoleUI consoleUI) {
+        consoleUI.printMessage("Enter contributor's name:", "yellow");
+        String contributorName = scanner.next();
+        consoleUI.printMessage("Enter amount to invoice:", "yellow");
+        double amount = scanner.nextDouble();
+        consoleUI.printMessage("Enter description for the invoice:", "yellow");
+        scanner.nextLine(); // Consume newline
+        String description = scanner.nextLine();
+
+        Invoice invoice = new Invoice(contributorName, amount, description);
+        invoices.add(invoice);
+
+        consoleUI.printMessage("Invoice created successfully!", "green");
+    }
+
+    // Method to view all invoices
+    private void viewInvoices(ConsoleUI consoleUI) {
+        consoleUI.printHeader("VIEW INVOICES");
+
+        if (invoices.isEmpty()) {
             consoleUI.printMessage("No invoices available.", "yellow");
-        } else {
-            advertiserInvoices.forEach((advertiser, amount) -> {
-                consoleUI.printMessage("Invoice for " + advertiser + ": $" + amount, "green");
-            });
+            return;
         }
-    }
 
-    public void payContributors(ConsoleUI consoleUI) {
-        consoleUI.printHeader("Paying Contributors");
-        if (paymentsDue.isEmpty()) {
-            consoleUI.printMessage("No payments due to contributors.", "yellow");
-        } else {
-            paymentsDue.forEach((contributor, amount) -> {
-                consoleUI.printMessage("Paying " + contributor + ": $" + amount, "green");
-            });
-            paymentsDue.clear();
-            consoleUI.printMessage("All payments have been processed.", "green");
+        for (Invoice invoice : invoices) {
+            System.out.println(invoice);
         }
-    }
-
-    public void addPayment(String contributor, double amount) {
-        paymentsDue.put(contributor, amount);
-    }
-
-    public void addInvoice(String advertiser, double amount) {
-        advertiserInvoices.put(advertiser, amount);
     }
 }
