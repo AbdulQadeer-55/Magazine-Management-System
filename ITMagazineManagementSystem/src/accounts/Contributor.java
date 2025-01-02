@@ -16,6 +16,4 @@ public abstract class Contributor {
     public String getEmail() {
         return email;
     }
-
-    public abstract double getPaymentAmount();
 }

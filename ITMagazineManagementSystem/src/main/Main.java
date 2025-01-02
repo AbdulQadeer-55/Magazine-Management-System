@@ -1,4 +1,3 @@
-// src/main/Main.java
 package main;
 
 import accounts.AccountsDepartment;
@@ -10,37 +9,58 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // Initialize necessary objects
         ConsoleUI consoleUI = new ConsoleUI();
-        MarketingDepartment marketing = new MarketingDepartment();
-        Editor editor = new Editor();
-        AccountsDepartment accounts = new AccountsDepartment();
-        ArchiveManager archiveManager = new ArchiveManager();
-
         Scanner scanner = new Scanner(System.in);
 
+        // Initialize departments and managers
+        AccountsDepartment accountsDepartment = new AccountsDepartment();
+        final MarketingDepartment marketingDepartment = new MarketingDepartment("defaultArgument"); // Replace with appropriate arguments
+        ArchiveManager archiveManager = new ArchiveManager();
+        Editor editor = new Editor();
+
+        // Main menu loop
         while (true) {
-            consoleUI.printHeader("IT IN THE VALLEY MAGAZINE MANAGEMENT SYSTEM");
+            consoleUI.printHeader("IT Magazine Management System");
             consoleUI.printMenu(new String[]{
-                    "1. Manage Advertisements",
-                    "2. Manage Stories and Photographs",
-                    "3. Manage Payments",
-                    "4. Archive Unused Content",
+                    "1. Manage Accounts Department",
+                    "2. Manage Marketing Department",
+                    "3. Manage Editing Department",
+                    "4. Manage Archive",
                     "5. Exit"
             });
 
             int choice = consoleUI.getChoice(scanner);
 
             switch (choice) {
-                case 1 -> marketing.manageAdvertisements(scanner, consoleUI);
-                case 2 -> editor.manageContent(scanner, consoleUI);
-                case 3 -> accounts.managePayments(scanner, consoleUI);
-                case 4 -> archiveManager.archiveContent(scanner, consoleUI);
+                case 1 -> manageAccounts(scanner, consoleUI, accountsDepartment);
+                case 2 -> marketingDepartment.manageAdvertisements(scanner, consoleUI);
+                case 3 -> editor.manageContent(scanner, consoleUI);
+                case 4 -> archiveManager.manageArchive(scanner, consoleUI);
                 case 5 -> {
-                    consoleUI.printMessage("Thank you for using the system. Goodbye!", "green");
-                    return;
+                    consoleUI.printMessage("Exiting the system. Goodbye!", "yellow");
+                    return; // Exit the application
                 }
-                default -> consoleUI.printMessage("Invalid option. Please try again.", "red");
+                default -> consoleUI.printMessage("Invalid option, please try again.", "red");
             }
+        }
+    }
+
+    private static void manageAccounts(Scanner scanner, ConsoleUI consoleUI, AccountsDepartment accountsDepartment) {
+        consoleUI.printHeader("ACCOUNTS DEPARTMENT");
+        consoleUI.printMenu(new String[]{
+                "1. View Invoices",
+                "2. Pay Contributors",
+                "3. Go Back"
+        });
+
+        int choice = consoleUI.getChoice(scanner);
+
+        switch (choice) {
+            case 1 -> accountsDepartment.viewInvoices(consoleUI);
+            case 2 -> accountsDepartment.payContributors(consoleUI);
+            case 3 -> consoleUI.printMessage("Returning to the main menu.", "yellow");
+            default -> consoleUI.printMessage("Invalid option, please try again.", "red");
         }
     }
 }

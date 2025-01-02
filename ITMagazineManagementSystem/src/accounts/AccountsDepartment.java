@@ -4,7 +4,6 @@ import main.ConsoleUI;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class AccountsDepartment {
     private final Map<String, Double> paymentsDue;
@@ -15,57 +14,35 @@ public class AccountsDepartment {
         this.advertiserInvoices = new HashMap<>();
     }
 
-    public void managePayments(Scanner scanner, ConsoleUI consoleUI) {
-        consoleUI.printHeader("MANAGE PAYMENTS");
-        consoleUI.printMenu(new String[]{
-                "1. Process Payments to Contributors",
-                "2. Invoice Advertisers",
-                "3. View Outstanding Payments",
-                "4. Go Back"
-        });
-
-        int choice = consoleUI.getChoice(scanner);
-
-        switch (choice) {
-            case 1 -> processContributorPayments(consoleUI);
-            case 2 -> invoiceAdvertisers(scanner, consoleUI);
-            case 3 -> viewOutstandingPayments(consoleUI);
-            case 4 -> consoleUI.printMessage("Returning to the main menu.", "yellow");
-            default -> consoleUI.printMessage("Invalid option.", "red");
+    public void viewInvoices(ConsoleUI consoleUI) {
+        consoleUI.printHeader("Invoices Management");
+        if (advertiserInvoices.isEmpty()) {
+            consoleUI.printMessage("No invoices available.", "yellow");
+        } else {
+            advertiserInvoices.forEach((advertiser, amount) -> {
+                consoleUI.printMessage("Invoice for " + advertiser + ": $" + amount, "green");
+            });
         }
     }
 
-    private void processContributorPayments(ConsoleUI consoleUI) {
+    public void payContributors(ConsoleUI consoleUI) {
+        consoleUI.printHeader("Paying Contributors");
         if (paymentsDue.isEmpty()) {
             consoleUI.printMessage("No payments due to contributors.", "yellow");
-            return;
+        } else {
+            paymentsDue.forEach((contributor, amount) -> {
+                consoleUI.printMessage("Paying " + contributor + ": $" + amount, "green");
+            });
+            paymentsDue.clear();
+            consoleUI.printMessage("All payments have been processed.", "green");
         }
-
-        paymentsDue.forEach((contributor, amount) -> {
-            consoleUI.printMessage("Processing payment of $" + amount + " to " + contributor, "green");
-        });
-        paymentsDue.clear();
     }
 
-    private void invoiceAdvertisers(Scanner scanner, ConsoleUI consoleUI) {
-        consoleUI.printMessage("Enter advertiser name:", "yellow");
-        String name = scanner.next();
-        consoleUI.printMessage("Enter amount to invoice:", "yellow");
-        double amount = scanner.nextDouble();
-
-        advertiserInvoices.put(name, amount);
-        consoleUI.printMessage("Invoice of $" + amount + " sent to " + name, "green");
+    public void addPayment(String contributor, double amount) {
+        paymentsDue.put(contributor, amount);
     }
 
-    private void viewOutstandingPayments(ConsoleUI consoleUI) {
-        consoleUI.printHeader("OUTSTANDING PAYMENTS");
-        if (advertiserInvoices.isEmpty()) {
-            consoleUI.printMessage("No outstanding payments.", "yellow");
-            return;
-        }
-
-        advertiserInvoices.forEach((advertiser, amount) -> {
-            System.out.println("[Advertiser: " + advertiser + ", Amount Due: $" + amount + "]");
-        });
+    public void addInvoice(String advertiser, double amount) {
+        advertiserInvoices.put(advertiser, amount);
     }
 }

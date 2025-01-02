@@ -1,19 +1,19 @@
-// src/marketing/Advertisement.java
 package marketing;
 
 public class Advertisement {
-    private final String title;
-    private final String size;
-    private final String month;
+    private final String advertiser;
+    private final double amount;
 
-    public Advertisement(String title, String size, String month) {
-        this.title = title;
-        this.size = size;
-        this.month = month;
+    public Advertisement(String advertiser, double amount) {
+        this.advertiser = advertiser;
+        this.amount = amount;
     }
 
-    @Override
-    public String toString() {
-        return "[Title: " + title + ", Size: " + size + ", Month: " + month + "]";
+    public String getAdvertiser() {
+        return advertiser;
+    }
+
+    public double getAmount() {
+        return amount;
     }
 }
