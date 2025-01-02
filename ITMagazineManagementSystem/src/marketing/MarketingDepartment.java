@@ -30,7 +30,7 @@ public class MarketingDepartment {
         }
     }
 
-    private void addAdvertisement(Scanner scanner, ConsoleUI consoleUI) {
+    public void addAdvertisement(Scanner scanner, ConsoleUI consoleUI) {
         consoleUI.printMessage("Enter advertiser name:", "yellow");
         String advertiser = scanner.nextLine();
         consoleUI.printMessage("Enter amount for advertisement:", "yellow");
@@ -41,7 +41,7 @@ public class MarketingDepartment {
         consoleUI.printMessage("Advertisement added successfully.", "green");
     }
 
-    private void viewAdvertisements(ConsoleUI consoleUI) {
+    public void viewAdvertisements(ConsoleUI consoleUI) {
         consoleUI.printHeader("View Advertisements");
         if (advertisements.isEmpty()) {
             consoleUI.printMessage("No advertisements available.", "yellow");

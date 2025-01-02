@@ -1,18 +1,69 @@
 package accounts;
 
 public class Invoice {
-    private final String contributorName;
-    private final double amount;
-    private final String description;
+
+    private String contributorName;
+
+    private double amount;
+
+    private String description;
+
+    private boolean paid;
+
+
 
     public Invoice(String contributorName, double amount, String description) {
+
         this.contributorName = contributorName;
+
         this.amount = amount;
+
         this.description = description;
+
+        this.paid = false;
+
     }
 
-    @Override
-    public String toString() {
-        return "Invoice [Contributor: " + contributorName + ", Amount: $" + amount + ", Description: " + description + "]";
+
+
+    // Getters and setters
+
+    public String getContributorName() {
+
+        return contributorName;
+
     }
+
+
+
+    public double getAmount() {
+
+        return amount;
+
+    }
+
+
+
+    public String getDescription() {
+
+        return description;
+
+    }
+
+
+
+    public boolean isPaid() {
+
+        return paid;
+
+    }
+
+
+
+    public void setPaid(boolean paid) {
+
+        this.paid = paid;
+
+    }
+
 }

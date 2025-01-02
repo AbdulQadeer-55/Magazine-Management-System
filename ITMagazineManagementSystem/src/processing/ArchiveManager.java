@@ -55,7 +55,7 @@ public class ArchiveManager {
         consoleUI.printMessage("Photograph archived successfully.", "green");
     }
 
-    private void viewArchivedContent(ConsoleUI consoleUI) {
+    public void viewArchivedContent(ConsoleUI consoleUI) {
         consoleUI.printHeader("View Archived Content");
         if (archivedStories.isEmpty() && archivedPhotographs.isEmpty()) {
             consoleUI.printMessage("No archived content available.", "yellow");
@@ -66,5 +66,10 @@ public class ArchiveManager {
             consoleUI.printMessage("Archived Photographs:", "yellow");
             archivedPhotographs.forEach(photograph -> consoleUI.printMessage(photograph.toString(), "green"));
         }
+    }
+
+    public Object archiveContent(Scanner scanner, ConsoleUI consoleUI) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'archiveContent'");
     }
 }

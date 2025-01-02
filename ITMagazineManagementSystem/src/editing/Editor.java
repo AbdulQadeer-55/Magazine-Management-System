@@ -37,4 +37,14 @@ public class Editor {
         Photograph photograph = new Photograph(caption);
         consoleUI.printMessage("Photograph \"" + photograph.getCaption() + "\" added successfully.", "green");
     }
+
+    public Object viewStories(ConsoleUI consoleUI) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'viewStories'");
+    }
+
+    public Object addStory(Scanner scanner, ConsoleUI consoleUI) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addStory'");
+    }
 }
