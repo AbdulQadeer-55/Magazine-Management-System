@@ -1,4 +1,4 @@
-name: Auto Commit Python Files
+name: Auto Commit README
 
 on:
   schedule:
@@ -6,51 +6,26 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  update-py-files:
+  update-readme:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Generate Python files
+    - name: Update README.md
       run: |
-        # Create a unique filename based on the date and time
-        FILE_NAME="script_$(date +'%Y%m%d_%H%M%S').py"
-        
-        # Create Python file with different contents based on the day
-        case $(date +%u) in
-          1)
-            echo "print('Hello from Python!')" > $FILE_NAME
-            ;;
-          2)
-            echo "def fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nprint(fibonacci(10))" > $FILE_NAME
-            ;;
-          3)
-            echo "import random\n\nprint(random.choice(['apple', 'banana', 'cherry']))" > $FILE_NAME
-            ;;
-          4)
-            echo "def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n-1)\n\nprint(factorial(5))" > $FILE_NAME
-            ;;
-          5)
-            echo "import math\n\nprint(math.sqrt(144))" > $FILE_NAME
-            ;;
-          6)
-            echo "def reverse_string(s):\n    return s[::-1]\n\nprint(reverse_string('hello'))" > $FILE_NAME
-            ;;
-          7)
-            echo "def palindrome(s):\n    return s == s[::-1]\n\nprint(palindrome('madam'))" > $FILE_NAME
-            ;;
-        esac
+        echo "Last updated: $(date)" >> README.md
 
     - name: Commit changes
       run: |
         git config --global user.name "AbdulQadeer-55"
         git config --global user.email "qadeermemon100@gmail.com"
-        git add $FILE_NAME
-        git commit -m "Add new Python script: $FILE_NAME"
+        git add README.md
+        git commit -m "Update README: $(date +'%Y-%m-%d %H:%M:%S')"
     
     - name: Push changes
       run: git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
