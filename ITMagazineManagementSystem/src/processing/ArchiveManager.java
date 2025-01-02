@@ -67,9 +67,4 @@ public class ArchiveManager {
             archivedPhotographs.forEach(photograph -> consoleUI.printMessage(photograph.toString(), "green"));
         }
     }
-
-    public Object archiveContent(Scanner scanner, ConsoleUI consoleUI) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'archiveContent'");
-    }
 }
