@@ -2,7 +2,7 @@ name: Daily LeetCode Solutions
 
 on:
   schedule:
-    - cron: "0 */96 * * *"  # Runs every 4 hours
+    - cron: "0 */4 * * *"  # Runs every 4 hours
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -39,6 +39,7 @@ jobs:
         {example}
         """
 
+
         class Solution:
             def {function_name}(self{params}):
                 """
@@ -48,6 +49,7 @@ jobs:
                 Space Complexity: {space_complexity}
                 """
                 {solution_code}
+
 
         # Test cases
         def test_{function_name}():
