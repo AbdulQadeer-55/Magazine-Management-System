@@ -1,2 +1,3 @@
 def twoSum(nums, target):\n    for i in range(len(nums)):\n        for j in range(i+1, len(nums)):\n            if nums[i] + nums[j] == target:\n                return [i, j]
 def reverseList(head):\n    prev = None\n    while head:\n        next_node = head.next\n        head.next = prev\n        prev = head\n        head = next_node\n    return prev
+def lengthOfLongestSubstring(s):\n    chars = {}\n    left = 0\n    max_len = 0\n    for right in range(len(s)):\n        if s[right] in chars and chars[s[right]] >= left:\n            left = chars[s[right]] + 1\n        chars[s[right]] = right\n        max_len = max(max_len, right - left + 1)\n    return max_len
